@@ -1,0 +1,1 @@
+# seijya-monogatari-settings
