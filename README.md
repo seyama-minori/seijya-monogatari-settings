@@ -61,9 +61,7 @@ revealed_settingsにある設定は、ファイル名は設定の名称ですが
 ```
 published_settings/
 ├── character_details.md
-├── character_details.md.ots
 ├── world_mechanics.md
-├── world_mechanics.md.ots
 └── ...
 ```
 
@@ -72,46 +70,53 @@ published_settings/
 - **読者への情報**: 作者の構想の全貌
 
 #### 詳細説明
-published_settingsには、完全に公開された設定内容と、その事前存在を証明する.otsファイルが格納されています。
+published_settingsには、完全に公開された設定内容が格納されています。
 
-**拡張子.otsファイルについて**
-同じファイル名の設定について、[OpenTimestamps](https://opentimestamps.org/)にて、ブロックチェーンによる存在証明をした証跡ファイルとなります。GitHubのログで十分確認できると思いますが、Gitのログは改ざんの余地があると考える方はこちらで検証することも可能です。
+
+### 🔍 verification_data（検証用データ）
+```
+verification_data/
+├── timestamps/
+│   ├── character_details.md.ots
+│   ├── world_mechanics.md.ots
+│   └── ...
+└── keys/
+    ├── character_details.key
+    ├── world_mechanics.key
+    └── ...
+```
+
+- **目的**: published_settingsの事前存在を検証するためのデータを提供
+- **状態**: OpenTimestamps証明ファイルと復号化鍵を公開
+- **読者への情報**: 設定の事前構想を技術的に検証可能
+
+#### 詳細説明
+verification_dataには、公開された設定内容の事前存在を証明するための検証用ファイルが格納されています。
+
+**timestamps/ディレクトリ（OpenTimestamps証明ファイル）**
+設定内容が公開される際に同時に配置される、[OpenTimestamps](https://opentimestamps.org/)による存在証明ファイルです。
 
 .otsファイルは以下の特徴があります：
 - **改ざん不可能**: Bitcoinブロックチェーンに記録されているため、後から変更できません
 - **第三者検証**: OpenTimestampsのWebサイトで誰でも検証可能です
 - **独立性**: GitHub等のサービスに依存しない証明方法です
 
-検証方法：対応する設定ファイルと.otsファイルをOpenTimestampsのWebサイト(https://opentimestamps.org/) にアップロードすると、そのファイルが特定の日時より前に存在していたことが数学的に証明されます。
+**検証方法**: published_settingsの設定ファイルと対応する.otsファイルをOpenTimestampsのWebサイト(https://opentimestamps.org/) にアップロードすると、その設定が特定の日時より前に存在していたことが数学的に証明されます。
 
-### 🔑 encrypted_keys（検証用暗号鍵）
-```
-encrypted_keys/
-├── character_details.key
-├── world_mechanics.key
-└── ...
-```
-
-- **目的**: published_settingsの検証に必要な暗号鍵を提供
-- **状態**: published_settingsと対応する暗号鍵を公開
-- **読者への情報**: 暗号化ファイルの復号・検証が可能
-
-#### 詳細説明
-encrypted_keysには、published_settingsで公開された設定に対応する暗号鍵が格納されています。
-
-**暗号鍵の役割**  
+**keys/ディレクトリ（復号化鍵）**
 published_settingsで公開された設定内容が、事前に作成された暗号化ファイルと同じ内容であることを検証するために使用します。読者は以下の手順で検証できます：
-
-1. encrypted_keysから対応する暗号鍵を取得
+1. verification_data/keys/から対応する暗号鍵を取得
 2. 暗号鍵を使ってencrypted_settingsの該当ファイルを復号  
 3. 復号結果とpublished_settingsの内容が一致することを確認
 
 **ファイル名の対応関係**  
 - `published_settings/シュミルとユーカルの関係.md`
-- `encrypted_keys/シュミルとユーカルの関係.key`
+- `verification_data/timestamps/シュミルとユーカルの関係.md.ots`
+- `verification_data/keys/シュミルとユーカルの関係.key`
 - `encrypted_settings/[ハッシュ値].enc`（revealed_settingsで公開されたファイル名から特定）
 
 これにより、事前の構想の内容とそれがいつからあったかを技術的に確認することができます。
+
 
 
 ## 🔄 設定公開の流れ
@@ -130,8 +135,9 @@ encrypted_settings → revealed_settings → published_settings
 2. **存在公開**: `シュミルとユーカルの関係.md` - 「シュミルとユーカルの関係」について記載された設定ファイルが存在していることが分かり、その存在が事前にあったことを検証ができます
 3. **完全公開**: 
    - `published_settings/シュミルとユーカルの関係.md` - 詳細な設定内容を公開
-   - `encrypted_keys/シュミルとユーカルの関係.key` - 検証用暗号鍵を同時公開
-   - 読者は暗号鍵を使って元の暗号化ファイルを復号し、公開内容と一致することで事前存在を検証可能です。
+   - `verification_data/timestamps/シュミルとユーカルの関係.md.ots` - ブロックチェーン存在証明を同時公開
+   - `verification_data/keys/シュミルとユーカルの関係.key` - 検証用暗号鍵を同時公開
+   - 読者は必要に応じて.otsファイルで事前存在を検証し、暗号鍵を使って暗号化ファイルと一致することも確認可能です
 
 ## 💭 このリポジトリの目的
 
