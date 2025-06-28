@@ -39,7 +39,7 @@ encrypted_settingsにある設定は、ファイル名はハッシュ化、フ�
 ```
 revealed_settings/
 ├── protagonist_background.md
-├── protagonist_background.md.ots
+├── world_mechanics.md
 └── ...
 ```
 
@@ -56,6 +56,24 @@ revealed_settingsにある設定は、ファイル名は設定の名称ですが
 **ファイル内容について**  
 設定の詳細情報が暗号化されて記載されています。将来的に筆者が設定内容を明かす際に、ファイルの暗号鍵とともにpublished_settingsで公開します。一般的にはpublished_settingsを読んでいただくことを想定していますが、暗号鍵を使って復元することで、事前に考えられていた内容であることを確認できます。
 
+
+### 📖 published_settings（公開済設定）
+```
+published_settings/
+├── character_details.md
+├── character_details.md.ots
+├── world_mechanics.md
+├── world_mechanics.md.ots
+└── ...
+```
+
+- **目的**: 完全な設定内容の開示
+- **状態**: 詳細な設定内容を完全公開
+- **読者への情報**: 作者の構想の全貌
+
+#### 詳細説明
+published_settingsには、完全に公開された設定内容と、その事前存在を証明する.otsファイルが格納されています。
+
 **拡張子.otsファイルについて**
 同じファイル名の設定について、[OpenTimestamps](https://opentimestamps.org/)にて、ブロックチェーンによる存在証明をした証跡ファイルとなります。GitHubのログで十分確認できると思いますが、Gitのログは改ざんの余地があると考える方はこちらで検証することも可能です。
 
@@ -65,18 +83,6 @@ revealed_settingsにある設定は、ファイル名は設定の名称ですが
 - **独立性**: GitHub等のサービスに依存しない証明方法です
 
 検証方法：対応する設定ファイルと.otsファイルをOpenTimestampsのWebサイト(https://opentimestamps.org/) にアップロードすると、そのファイルが特定の日時より前に存在していたことが数学的に証明されます。
-
-### 📖 published_settings（公開済設定）
-```
-published_settings/
-├── character_details.md
-├── world_mechanics.md
-└── ...
-```
-
-- **目的**: 完全な設定内容の開示
-- **状態**: 詳細な設定内容を完全公開
-- **読者への情報**: 作者の構想の全貌
 
 ### 🔑 encrypted_keys（検証用暗号鍵）
 ```
